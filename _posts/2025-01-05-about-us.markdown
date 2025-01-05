@@ -2,6 +2,30 @@
 layout: post
 title:  "about-us"
 date:   2025-01-05 12:56:42 +0530
-categories: update
+categories: about-us
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+
+#### About us 
+
+- We are a boutique Software Development firm based out of Gurugram (Haryana) and Itanagar ( Arunachal ) 
+- Our Primary programming Language is - [Python]
+- We deploy LLM (Large Language Models) from - OpenAI , HuggingFace , Google ,AWS-Bedrock and AzureOpenAI
+- We utilize Computer Vision platforms - OpenCV , Detectron2 (FaceBook-AI-Research-FAIR), YOLO(v4) Darknet
+
+
+#### PyTorch
+
+- [1 PyTorch-SimpleNet](https://www.youtube.com/watch?v=bYsgVe53o9A)
+- [PyTorch_UNet](https://github.com/RohitDhankar/PyTorch_1/blob/master/src/unet_pytorch_2.py)
+- [1.1-PyTorch-Layers-Conv2d-Architecture](https://www.youtube.com/watch?v=bYsgVe53o9A&t=365s)
+- [1.2-PyTorch-transforms.Compose](https://www.youtube.com/watch?v=bYsgVe53o9A&t=990s)
+- [1.3-PyTorch-freezingLayers-torch.no_grad()](https://www.youtube.com/watch?v=bYsgVe53o9A&t=780s)
+- [1.4-PyTorch-Initial-ObjectDetection-YouTube](https://www.youtube.com/watch?v=qcpLU5K8j4E&t=407s)
+- [1.5-PyTorch--SimpleNet-Airplane-Classifier](https://www.youtube.com/watch?v=tSdNa_oPHLg)
+
+
+#### Contact-Us
+Email - overlander.tech.1@gmail.com
+Address - 
+- Gurugram - Ansals API Esencia
+- Itanagar - Near - Donyi Polo Airport, Itanagar
