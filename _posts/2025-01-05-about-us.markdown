@@ -7,10 +7,29 @@ categories: about-us
 
 #### About us 
 
-- We are a boutique Software Development firm based out of Gurugram (Haryana) and Itanagar ( Arunachal ) 
-- Our Primary programming Language is - [Python]
-- We deploy LLM (Large Language Models) from - OpenAI , HuggingFace , Google ,AWS-Bedrock and AzureOpenAI
-- We utilize Computer Vision platforms - OpenCV , Detectron2 (FaceBook-AI-Research-FAIR), YOLO(v4) Darknet
+- We are a boutique Software Development firm based out of Itanagar ( Arunachal ) and Gurugram (Haryana).
+
+- Our Primary programming Language is -Python for Deep Learning [Python](https://www.kaggle.com/code/kanncaa1/convolutional-neural-network-cnn-tutorial)
+
+- We deploy LLM (Large Language Models) from - OpenAI , HuggingFace , Google ,AWS-Bedrock and AzureOpenAI 
+
+- We utilize Computer Vision platforms - OpenCV , [Detectron2](https://github.com/facebookresearch/detectron2) (FaceBook-AI-Research-FAIR), YOLO(v4-v7) [Darknet](https://github.com/WongKinYiu/yolov7)
+
+</br>
+
+
+#### Contact-Us
+
+#### Address - 
+
+- Itanagar - Mr Lhakpa Tsering - Upper Ess Sector Hilltop, NEAR MINISTER BUNGALOW NO 6, ITANAGAR-791111, ARUNACHAL PRADESH
+
+- Gurugram - Mr Himanshu Yadav - Ansals API Esencia
+
+#### Email - [overlander.tech.1@gmail.com](overlander.tech.1@gmail.com)
+#
+
+</br>
 
 
 #### PyTorch
@@ -21,11 +40,59 @@ categories: about-us
 - [1.2-PyTorch-transforms.Compose](https://www.youtube.com/watch?v=bYsgVe53o9A&t=990s)
 - [1.3-PyTorch-freezingLayers-torch.no_grad()](https://www.youtube.com/watch?v=bYsgVe53o9A&t=780s)
 - [1.4-PyTorch-Initial-ObjectDetection-YouTube](https://www.youtube.com/watch?v=qcpLU5K8j4E&t=407s)
+- [1.4a-PyTorch-Initial-ObjectDetection-Git](https://github.com/RohitDhankar/obj_det/tree/dev_rohit/_taco_1)
 - [1.5-PyTorch--SimpleNet-Airplane-Classifier](https://www.youtube.com/watch?v=tSdNa_oPHLg)
+- [1.5a-PyTorch_normalization_setting_from_Imagenet_Explained](https://github.com/RohitDhankar/obj_det/blob/dev_rohit/_book_17/ownNotes_PyTorch_transform.Normalize_NORMALIZE_1.log)
 
 
-#### Contact-Us
-Email - overlander.tech.1@gmail.com
-Address - 
-- Gurugram - Ansals API Esencia
-- Itanagar - Near - Donyi Polo Airport, Itanagar
+- [pytorch_CycleGAN_and_pix2pix_Test](https://www.youtube.com/watch?v=sIt_judPLp0)
+> Absolutely excellent code and documentation , could get the Test - Inference running within an hour on own local system Own Video initial experiment -- YouTube Link - [pytorch_CycleGAN_and_pix2pix_Test](https://www.youtube.com/watch?v=sIt_judPLp0)
+
+- [2] `Diffusers - Text to Image ` 
+- [2.1-Create-own-pipeline](https://www.youtube.com/watch?v=TVZLk7CPKcI)
+
+##### detectron2
+
+- [3] `detectron2 from Facebook AI Research- for Object Detection` 
+- [3.1-detectron2-FAIR-Panoptic-Segmentation-YouTube](https://www.youtube.com/watch?v=6maQvG_5fZM&t=165s)
+- [3.1a-detectron2-FAIR-Panoptic-Segmentation-GitRepo](https://github.com/RohitDhankar/detectron2_coco_panoptic_seg)
+- (https://github.com/RohitDhankar/detectron2_coco_panoptic_seg/blob/main/output_dir/__11_04_2022_23_50__/_dir_img_gt_bbox_/_11_04_2022_23_50_/000000000139_0.50_.png)
+- [3.2-detectron2-faster_rcnn_R_50_FPN_3x](https://github.com/RohitDhankar/Obj_Detect_Detectron2/blob/main/src/det2_2.py) 
+- [3.3-detectron2-config_explained](https://www.youtube.com/watch?v=NRred6RjWsU&t=1800s)
+-self.get_config.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
+- [3.3a-detectron2-LAUNCH_explained](https://www.youtube.com/watch?v=NRred6RjWsU&t=780s) [LAUNCH-detectron2](https://detectron2.readthedocs.io/en/stable/_modules/detectron2/engine/launch.html)
+- [3.3b-detectron2-model_zoo_explained](https://www.youtube.com/watch?v=9VmPq-kYB60&t=210s)
+- [3.3c-detectron2 , COCO API explained , pycocotools , training data set , validation set , categories of the COCO Dataset](https://www.youtube.com/watch?v=9VmPq-kYB60&t=270s) 
+- [pyCOCO-get-annotation-ID's]
+- ```annotation_ids = coco_obj.getAnnIds(imgIds=ls_image_ids_bikes[iter_image], catIds=[2])```(https://github.com/RohitDhankar/Obj_Detect_Detectron2/blob/950503a6f64783d8d54e50af49e3e9888a14b428/src/det2_1.py#L101C5-L101C91)
+
+- [3.4-detectron2 from FAIR](https://github.com/RohitDhankar/Obj_Detect_Detectron2/blob/main/src/det2_2.py)
+- [3.5-kaggle_sartorius-cell-instance-segmentation-GIT-Repo](https://github.com/RohitDhankar/kaggle_sartorius-cell-instance-segmentation/blob/main/originalCOCO_Code_mask.py) 
+- [3.2-kaggle_sartorius-YOuTube-Explainer](https://www.youtube.com/watch?v=jU2n0GRAq2o&t=407s)
+
+##### LIDAR 
+- [4-OpenPCDet_Initial_Demo_MAYAVI_KITTI_LIDAR](https://www.youtube.com/watch?v=tLwHWVfl16A) 
+- [4.1-OpenPCDet_Git-Experiments_KITTI_LIDAR](https://github.com/RohitDhankar/OpenPCDet/blob/master/init_INSTALL_ERRORS_1.md)
+
+
+#### [Neural_Networks-Basics]
+
+##### Convolutional Neural Network - for Object Detection 
+
+- [Convolutional_neural_network](https://en.wikipedia.org/wiki/Convolutional_neural_network)
+
+- [1] `Neural Networks - mostly CNN for Image tasks`
+- [CNN-Layers_architecture_Explained-GITRepo](https://github.com/RohitDhankar/obj_det/blob/dev_rohit/_book_17/ownNotes_Layers_Architecture_1.log)
+
+- [1-Book-1-Practical-Deep-Learning(Anirudh-Koul)](https://github.com/PracticalDL/Practical-Deep-Learning-Book)
+- [1.1-Book-1-->Image_Similarity_Search_18March22-YouTube](https://www.youtube.com/watch?v=Tn7spbLO3xQ)
+- [1.1a-Book-1-->Image_Similarity_Search_18March22-GitRepo](https://github.com/RohitDhankar/obj_det/blob/dev_rohit/_book_1/practl_dl/pract_dl_1.py)
+- [1.1b-Book-1-->Image-Feature-Extraction-GitRepo](https://github.com/RohitDhankar/obj_det/blob/dev_rohit/_book_1/practl_dl/pract_dl_1.py)
+- [1.1c-Book-1-->Image-Feature-Extraction_for_ACTIVE_Learning_LIGHTLY-YouTube](https://www.youtube.com/watch?v=Bj1rux7btzA)
+
+
+- `BOOK-2--Programming PyTorch for DeepLearning by Ian Pointer (O’Reilly). Copyright 2019 Ian Pointer, 978-1-492-04535-9`
+
+- [2-Book-2-->PyTorch-SimpleNet-AirplaneClassifier](https://github.com/RohitDhankar/obj_det/blob/dev_rohit/_book_2/logging_2_code_not_plane_4.log)
+<br/>
+
