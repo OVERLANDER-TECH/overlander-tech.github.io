@@ -408,20 +408,12 @@ permalink: /index.html
     <!-- ── POSTS ───────────────────────────────────────────── -->
     <div class="section-title">Posts</div>
     <div class="posts-section">
-      {% if site.posts.size > 0 %}
       <ul class="post-list">
-        {% for post in site.posts %}
         <li class="post-item">
-          <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
-          <a class="post-title" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <span class="post-date">Apr 26, 2026</span>
+          <a class="post-title" href="{{ '/mathematics/differential-equations/2026/04/26/differential-equations.html' | relative_url }}">Chapter 9 — Differential Equations</a>
         </li>
-        {% endfor %}
       </ul>
-      {% else %}
-      <div class="empty-state">
-        No posts yet — check back soon.
-      </div>
-      {% endif %}
     </div>
 
   </div>
