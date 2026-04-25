@@ -1,8 +1,8 @@
 ---
-title: "Chapter 9 — Differential Equations"
-date: 2026-04-26
 layout: post
-categories: mathematics differential-equations
+title: "Chapter 9 — Differential Equations"
+date:   2026-04-26 12:56:42 +0530
+categories: mathematics
 ---
 
 # Chapter 9: DIFFERENTIAL EQUATIONS
