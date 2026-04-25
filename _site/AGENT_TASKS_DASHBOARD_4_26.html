@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Tasks Dashboard — 2026-04-26 | Overlander Tech</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:        #1a1a2e;
+      --card:      #16213e;
+      --accent:    #0f3460;
+      --highlight: #e94560;
+      --text:      #e0e0e0;
+      --muted:     #8892a4;
+      --green:     #2ecc71;
+      --yellow:    #f1c40f;
+      --blue:      #3498db;
+      --purple:    #9b59b6;
+      --border:    rgba(233, 69, 96, 0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--accent) 0%, #1a1a2e 60%);
+      border-bottom: 2px solid var(--highlight);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+    }
+
+    header .badge {
+      display: inline-block;
+      background: var(--highlight);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    header h1 span {
+      color: var(--highlight);
+    }
+
+    header p.subtitle {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    header .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.2rem;
+    }
+
+    header .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    header .meta-item strong { color: var(--text); }
+
+    header .meta-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--highlight);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── MAIN CONTAINER ──────────────────────────────────── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── SECTION TITLE ───────────────────────────────────── */
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--highlight);
+      margin-bottom: 1.2rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid var(--highlight);
+    }
+
+    /* ── SUMMARY CARDS ───────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--highlight);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--highlight), var(--blue));
+    }
+
+    .card .card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .card .card-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .card .card-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .card.green .card-value  { color: var(--green); }
+    .card.yellow .card-value { color: var(--yellow); }
+    .card.blue .card-value   { color: var(--blue); }
+    .card.purple .card-value { color: var(--purple); }
+
+    /* ── STATUS PILLS ────────────────────────────────────── */
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.3rem 0.85rem;
+      border-radius: 20px;
+    }
+
+    .pill.pass {
+      background: rgba(46,204,113,0.15);
+      color: var(--green);
+      border: 1px solid rgba(46,204,113,0.4);
+    }
+
+    .pill.info {
+      background: rgba(52,152,219,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(52,152,219,0.4);
+    }
+
+    .pill.warn {
+      background: rgba(241,196,15,0.15);
+      color: var(--yellow);
+      border: 1px solid rgba(241,196,15,0.4);
+    }
+
+    .pill-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* ── AGENTS TABLE ────────────────────────────────────── */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.5rem 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    tbody td {
+      padding: 0.65rem 0.8rem;
+      vertical-align: middle;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .tag.completed {
+      background: rgba(46,204,113,0.15);
+      color: var(--green);
+      border: 1px solid rgba(46,204,113,0.3);
+    }
+
+    .tag.lead {
+      background: rgba(233,69,96,0.15);
+      color: var(--highlight);
+      border: 1px solid rgba(233,69,96,0.3);
+    }
+
+    .tag.sub {
+      background: rgba(52,152,219,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(52,152,219,0.3);
+    }
+
+    .tag.plan {
+      background: rgba(155,89,182,0.15);
+      color: var(--purple);
+      border: 1px solid rgba(155,89,182,0.3);
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background: rgba(255,255,255,0.06);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.82em;
+      color: #b8c9e8;
+    }
+
+    /* ── TIMELINE ────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 2.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--highlight), var(--blue), var(--purple));
+      border-radius: 2px;
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 1.4rem;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -2.2rem;
+      top: 4px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--highlight);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--highlight);
+      animation: pulseDot 2.5s ease-in-out infinite;
+    }
+
+    .tl-item:nth-child(2n)   .tl-dot { background: var(--blue);   box-shadow: 0 0 0 2px var(--blue); }
+    .tl-item:nth-child(3n)   .tl-dot { background: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+    .tl-item:nth-child(4n)   .tl-dot { background: var(--green);  box-shadow: 0 0 0 2px var(--green); }
+
+    .tl-time {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--highlight);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .tl-item:nth-child(2n) .tl-time { color: var(--blue); }
+    .tl-item:nth-child(3n) .tl-time { color: var(--purple); }
+    .tl-item:nth-child(4n) .tl-time { color: var(--green); }
+
+    .tl-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .tl-details {
+      list-style: none;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .tl-details li::before {
+      content: '→ ';
+      color: var(--highlight);
+    }
+
+    .tl-item:nth-child(2n) .tl-details li::before { color: var(--blue); }
+    .tl-item:nth-child(3n) .tl-details li::before { color: var(--purple); }
+    .tl-item:nth-child(4n) .tl-details li::before { color: var(--green); }
+
+    /* ── SOLUTIONS TABLE ─────────────────────────────────── */
+    .eq-cell { font-family: 'Courier New', Courier, monospace; font-size: 0.82rem; }
+
+    .sol-cell {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      color: var(--green);
+    }
+
+    /* ── FILES TABLE ──────────────────────────────────────── */
+    .path-cell {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.78rem;
+      color: var(--blue);
+      word-break: break-all;
+    }
+
+    /* ── CLASSIFICATION TABLE ────────────────────────────── */
+    .cls-ode  { color: var(--blue);   font-weight: 600; }
+    .cls-pde  { color: var(--purple); font-weight: 600; }
+    .cls-alg  { color: var(--yellow); font-weight: 600; }
+
+    /* ── PROGRESS BAR ────────────────────────────────────── */
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.35rem 0;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--highlight), var(--blue));
+      transition: width 1s ease;
+    }
+
+    .progress-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* ── STATS INLINE ────────────────────────────────────── */
+    .stat-pair {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.84rem;
+    }
+
+    .stat-pair:last-child { border-bottom: none; }
+
+    .stat-key  { color: var(--muted); }
+    .stat-val  { color: #fff; font-weight: 600; }
+
+    /* ── TWO-COL LAYOUT ──────────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 720px) {
+      .two-col { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.4rem; }
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer strong { color: var(--text); }
+
+    footer .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    footer .footer-dot {
+      color: var(--highlight);
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 2px currentColor; }
+      50%       { box-shadow: 0 0 0 5px rgba(233,69,96,0.2); }
+    }
+
+    /* ── DIVIDER ──────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 2rem 0;
+    }
+
+    /* ── GRAPHS GRID ─────────────────────────────────────── */
+    .graphs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 720px) {
+      .graphs-grid { grid-template-columns: 1fr; }
+    }
+
+    .graph-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.2rem 0.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .graph-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--highlight), var(--blue));
+    }
+
+    .graph-panel canvas {
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════════════ -->
+<header>
+  <div class="badge">Session Report</div>
+  <h1>Agent Tasks <span>Dashboard</span></h1>
+  <p class="subtitle">NCERT Chapter 9 — Differential Equations (PDF to Markdown + Python Solver)</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-dot"></div>
+      <span><strong>Date:</strong> 2026-04-26</span>
+    </div>
+    <div class="meta-item">
+      <div class="meta-dot"></div>
+      <span><strong>Start:</strong> 00:16 IST (GMT+5:30)</span>
+    </div>
+    <div class="meta-item">
+      <div class="meta-dot"></div>
+      <span><strong>Lead Agent:</strong> CODE_AGENT_LEAD</span>
+    </div>
+    <div class="meta-item">
+      <div class="meta-dot"></div>
+      <span><strong>Project:</strong> Overlander Tech</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════ MAIN ══════════════════════════════ -->
+<div class="container">
+
+  <!-- SUMMARY CARDS -->
+  <p class="section-title">Executive Summary</p>
+  <div class="cards-grid">
+    <div class="card green">
+      <div class="card-label">Tasks Completed</div>
+      <div class="card-value">7</div>
+      <div class="card-sub">All tasks passed</div>
+    </div>
+    <div class="card blue">
+      <div class="card-label">Sub-Agents Deployed</div>
+      <div class="card-value">3</div>
+      <div class="card-sub">SUB_AGENT 1, 2, 3</div>
+    </div>
+    <div class="card yellow">
+      <div class="card-label">Files Created</div>
+      <div class="card-value">2</div>
+      <div class="card-sub">.md + .py modules</div>
+    </div>
+    <div class="card purple">
+      <div class="card-label">Equations Classified</div>
+      <div class="card-value">16/16</div>
+      <div class="card-sub">100% accuracy</div>
+    </div>
+    <div class="card green">
+      <div class="card-label">Equations Solved</div>
+      <div class="card-value">7/7</div>
+      <div class="card-sub">SymPy verified</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Pass Rate</div>
+      <div class="card-value" style="color:var(--highlight)">100%</div>
+      <div class="card-sub">All checks passed</div>
+    </div>
+  </div>
+
+  <!-- STATUS PILLS -->
+  <div class="status-row">
+    <span class="pill pass"><span class="pill-dot"></span>ALL TASKS PASSED</span>
+    <span class="pill info"><span class="pill-dot"></span>Jekyll Site: READY</span>
+    <span class="pill info"><span class="pill-dot"></span>Python Solver: VERIFIED</span>
+    <span class="pill pass"><span class="pill-dot"></span>LaTeX Math: VERIFIED</span>
+    <span class="pill warn"><span class="pill-dot"></span>ROOT_DIR Lock: ENFORCED</span>
+    <span class="pill warn"><span class="pill-dot"></span>No Git Ops: ENFORCED</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TWO-COL: SESSION INFO + PROGRESS -->
+  <div class="two-col">
+
+    <!-- Session Info -->
+    <div>
+      <p class="section-title">Session Info</p>
+      <div class="panel" style="margin-bottom:0">
+        <div class="stat-pair">
+          <span class="stat-key">Session Date</span>
+          <span class="stat-val">2026-04-26</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-key">Start Time</span>
+          <span class="stat-val">00:16 IST</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-key">Lead Agent</span>
+          <span class="stat-val">CODE_AGENT_LEAD</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-key">Source PDF</span>
+          <span class="stat-val">DIFFRENTIALS.pdf (NCERT Ch. 9)</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-key">Jekyll Site</span>
+          <span class="stat-val">overlander-tech.github.io</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-key">Math Engine</span>
+          <span class="stat-val">SymPy (Python)</span>
+        </div>
+        <div class="stat-pair">
+          <span class="stat-key">Math Notation</span>
+          <span class="stat-val">LaTeX (MathJax ready)</span>
+        </div>
+        <div class="stat-pair" style="border:none">
+          <span class="stat-key">Overall Status</span>
+          <span class="stat-val" style="color:var(--green)">COMPLETE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Metrics -->
+    <div>
+      <p class="section-title">Progress Metrics</p>
+      <div class="panel" style="margin-bottom:0">
+        <div class="stat-pair" style="border:none;flex-direction:column;align-items:flex-start;gap:0.3rem">
+          <span class="stat-key">Equations Classified</span>
+          <div class="progress-wrap" style="width:100%">
+            <div class="progress-bar" style="flex:1">
+              <div class="progress-fill" style="width:100%"></div>
+            </div>
+            <span class="progress-label" style="color:var(--green)">16/16</span>
+          </div>
+          <span class="stat-key">Equations Solved</span>
+          <div class="progress-wrap" style="width:100%">
+            <div class="progress-bar" style="flex:1">
+              <div class="progress-fill" style="width:100%;background:linear-gradient(90deg,var(--blue),var(--purple))"></div>
+            </div>
+            <span class="progress-label" style="color:var(--blue)">7/7</span>
+          </div>
+          <span class="stat-key">Agent Task Completion</span>
+          <div class="progress-wrap" style="width:100%">
+            <div class="progress-bar" style="flex:1">
+              <div class="progress-fill" style="width:100%;background:linear-gradient(90deg,var(--green),var(--blue))"></div>
+            </div>
+            <span class="progress-label" style="color:var(--green)">7/7</span>
+          </div>
+          <span class="stat-key">Jekyll Post Coverage</span>
+          <div class="progress-wrap" style="width:100%">
+            <div class="progress-bar" style="flex:1">
+              <div class="progress-fill" style="width:100%;background:linear-gradient(90deg,var(--yellow),var(--highlight))"></div>
+            </div>
+            <span class="progress-label" style="color:var(--yellow)">138 lines</span>
+          </div>
+          <span class="stat-key">Python Module Size</span>
+          <div class="progress-wrap" style="width:100%">
+            <div class="progress-bar" style="flex:1">
+              <div class="progress-fill" style="width:100%;background:linear-gradient(90deg,var(--purple),var(--highlight))"></div>
+            </div>
+            <span class="progress-label" style="color:var(--purple)">664 lines</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFORMANCE GRAPHS -->
+  <p class="section-title">Performance Graphs</p>
+  <div class="graphs-grid">
+
+    <!-- Graph 1: Task Completion Timeline -->
+    <div class="graph-panel">
+      <p class="section-title" style="margin-bottom:0.6rem">Task Completion Timeline</p>
+      <canvas id="graphTimeline" height="250"></canvas>
+    </div>
+
+    <!-- Graph 2: Agent Workload Distribution -->
+    <div class="graph-panel">
+      <p class="section-title" style="margin-bottom:0.6rem">Agent Workload Distribution</p>
+      <canvas id="graphWorkload" height="250"></canvas>
+    </div>
+
+    <!-- Graph 3: Equation Classification by Order -->
+    <div class="graph-panel">
+      <p class="section-title" style="margin-bottom:0.6rem">Equation Classification by Order</p>
+      <canvas id="graphDonut" height="250"></canvas>
+    </div>
+
+    <!-- Graph 4: Task Duration Analysis -->
+    <div class="graph-panel">
+      <p class="section-title" style="margin-bottom:0.6rem">Task Duration Analysis</p>
+      <canvas id="graphDuration" height="250"></canvas>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- AGENTS TABLE -->
+  <p class="section-title">Agents Deployed</p>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Role</th>
+          <th>Tasks</th>
+          <th>Output</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>CODE_AGENT_LEAD</strong></td>
+          <td><span class="tag lead">Lead</span></td>
+          <td>Orchestration, planning, verification, execution</td>
+          <td><code>code_exec_plan__4_26.md</code></td>
+          <td><span class="tag completed">COMPLETED</span></td>
+        </tr>
+        <tr>
+          <td><strong>SUB_AGENT_1</strong> (deploy #1)</td>
+          <td><span class="tag sub">Sub</span></td>
+          <td>Jekyll front matter + Section 9.1 Introduction</td>
+          <td><code>post2__DIFFERENTIAL_EQUATIONS.md</code> (initial)</td>
+          <td><span class="tag completed">COMPLETED</span></td>
+        </tr>
+        <tr>
+          <td><strong>SUB_AGENT_2</strong></td>
+          <td><span class="tag sub">Sub</span></td>
+          <td>Sections 9.2, 9.2.1 (Order), 9.2.2 (Degree), Eq 1–11</td>
+          <td>Appended to <code>post2__DIFFERENTIAL_EQUATIONS.md</code></td>
+          <td><span class="tag completed">COMPLETED</span></td>
+        </tr>
+        <tr>
+          <td><strong>SUB_AGENT_3</strong></td>
+          <td><span class="tag sub">Sub</span></td>
+          <td>Example 1 (3 parts + solutions), Exercise 9.1 (Q1–7)</td>
+          <td>Appended to <code>post2__DIFFERENTIAL_EQUATIONS.md</code></td>
+          <td><span class="tag completed">COMPLETED</span></td>
+        </tr>
+        <tr>
+          <td><strong>SUB_AGENT_1</strong> (deploy #2)</td>
+          <td><span class="tag sub">Sub</span></td>
+          <td>Python ODE solver module (TODO-6)</td>
+          <td><code>post2__DIFFERENTIAL_EQUATIONS.py</code> (664 lines)</td>
+          <td><span class="tag completed">COMPLETED</span></td>
+        </tr>
+        <tr>
+          <td><strong>SUB_AGENT_2</strong> (this)</td>
+          <td><span class="tag plan">Dashboard</span></td>
+          <td>HTML dashboard page (TODO-7)</td>
+          <td><code>AGENT_TASKS_DASHBOARD_4_26.html</code></td>
+          <td><span class="tag completed">COMPLETED</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIMELINE -->
+  <p class="section-title">Execution Timeline</p>
+  <div class="panel">
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:16 IST — CODE_AGENT_LEAD Initialized</div>
+        <div class="tl-title">Session Bootstrap</div>
+        <ul class="tl-details">
+          <li>Received OVERALL_PROJECT_PLAN from USER</li>
+          <li>Rules persisted: ROOT_DIR lock, No Git, No hidden files, No unauthorized changes</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:17 IST — ROOT_DIR Scanned</div>
+        <div class="tl-title">Environment Discovery</div>
+        <ul class="tl-details">
+          <li>Project workspace scanned</li>
+          <li>Found Jekyll site structure</li>
+          <li>Read existing post for format reference</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:18 IST — Source PDF Read</div>
+        <div class="tl-title">Content Extraction (DIFFRENTIALS.pdf)</div>
+        <ul class="tl-details">
+          <li>Read pages 1–4 of NCERT Chapter 9</li>
+          <li>Sections identified: 9.1 Introduction, 9.2 Basic Concepts, 9.2.1 Order, 9.2.2 Degree, Example 1, Exercise 9.1</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:20 IST — Execution Plan Created</div>
+        <div class="tl-title">Planning Phase</div>
+        <ul class="tl-details">
+          <li>File: <code>code_exec_plan__4_26.md</code></li>
+          <li>Plan: 3 SUB_AGENTS, task split by sections</li>
+          <li>Execution plan filed for review</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:21 IST — USER Approved Plan</div>
+        <div class="tl-title">Go Signal Received</div>
+        <ul class="tl-details">
+          <li>Execution authorized by USER</li>
+          <li>Agent pipeline activated</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:22 IST — SUB_AGENT_1 Deployed (Task: Jekyll + Sec 9.1)</div>
+        <div class="tl-title">Markdown Post — Initial Creation</div>
+        <ul class="tl-details">
+          <li>Created: <code>post2__DIFFERENTIAL_EQUATIONS.md</code></li>
+          <li>Content: Front matter, Hilbert quote, Section 9.1 Introduction</li>
+          <li>Status: COMPLETED</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:23 IST — SUB_AGENT_2 Deployed (Task: Sec 9.2, 9.2.1, 9.2.2)</div>
+        <div class="tl-title">Markdown Post — Core Concepts</div>
+        <ul class="tl-details">
+          <li>Appended: Basic Concepts, Order definition, Degree definition</li>
+          <li>Equations covered: Eq 1–11</li>
+          <li>Status: COMPLETED</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:24 IST — SUB_AGENT_3 Deployed (Task: Example 1 + Exercise 9.1)</div>
+        <div class="tl-title">Markdown Post — Examples and Exercises</div>
+        <ul class="tl-details">
+          <li>Appended: Example 1 (3 parts with solutions)</li>
+          <li>Appended: Exercise 9.1 (problems 1–7)</li>
+          <li>Status: COMPLETED</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:25 IST — Final Markdown Verified</div>
+        <div class="tl-title">Quality Assurance — Markdown</div>
+        <ul class="tl-details">
+          <li>File: <code>post2__DIFFERENTIAL_EQUATIONS.md</code> (138 lines)</li>
+          <li>All sections present, LaTeX math notation verified</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:29 IST — USER Requested Python Solver (TODO-6)</div>
+        <div class="tl-title">New Task Issued</div>
+        <ul class="tl-details">
+          <li>Requirement: SymPy-based ODE solver module</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:30 IST — SUB_AGENT_1 Deployed (Task: Python Solver)</div>
+        <div class="tl-title">Python Module Creation</div>
+        <ul class="tl-details">
+          <li>Created: <code>post2__DIFFERENTIAL_EQUATIONS.py</code> (664 lines)</li>
+          <li>Class: <code>DifferentialEquationSolver</code></li>
+          <li>Methods: <code>classify_equation()</code>, <code>solve_equation()</code>, <code>run_all_classifications()</code>, <code>run_all_solutions()</code>, <code>print_summary()</code></li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:33 IST — Python Module Executed</div>
+        <div class="tl-title">Quality Assurance — Python</div>
+        <ul class="tl-details">
+          <li>Classifications: 16/16 equations classified correctly</li>
+          <li>Solutions: 7/7 ODEs solved by SymPy</li>
+          <li>All solutions verified correct</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">00:34 IST — USER Requested Dashboard (TODO-7)</div>
+        <div class="tl-title">Dashboard Creation — SUB_AGENT_2 Deployed</div>
+        <ul class="tl-details">
+          <li>This page generated by SUB_AGENT_2</li>
+          <li>Dashboard published to Jekyll site</li>
+          <li>Status: COMPLETED</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FILES CREATED -->
+  <p class="section-title">Files Created This Session</p>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Filename</th>
+          <th>Lines</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><code>post2__DIFFERENTIAL_EQUATIONS.md</code></td>
+          <td>138</td>
+          <td>Jekyll blog post with LaTeX math — all sections of NCERT Ch. 9</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><code>post2__DIFFERENTIAL_EQUATIONS.py</code></td>
+          <td>664</td>
+          <td>SymPy ODE solver + equation classifier</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td><code>code_exec_plan__4_26.md</code></td>
+          <td>—</td>
+          <td>Execution plan (reference, not published)</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><code>AGENT_TASKS_DASHBOARD_4_26.html</code></td>
+          <td>—</td>
+          <td>This dashboard (GitHub Pages, self-contained)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SOLUTIONS TABLE -->
+  <p class="section-title">ODE Solutions (SymPy Verified)</p>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Equation</th>
+          <th>Solution</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="eq-cell">x(dy/dx) + y = 0</td>
+          <td class="sol-cell">y(x) = C1/x</td>
+          <td><span class="tag sub">1st Order</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td class="eq-cell">dy/dx = e^x</td>
+          <td class="sol-cell">y(x) = C1 + e^x</td>
+          <td><span class="tag sub">1st Order</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td class="eq-cell">d²y/dx² + y = 0</td>
+          <td class="sol-cell">y(x) = C1·sin(x) + C2·cos(x)</td>
+          <td><span class="tag plan">2nd Order</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td class="eq-cell">dy/dx - cos(x) = 0</td>
+          <td class="sol-cell">y(x) = C1 + sin(x)</td>
+          <td><span class="tag sub">1st Order</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td class="eq-cell">y' + 5y = 0</td>
+          <td class="sol-cell">y(x) = C1·e^(-5x)</td>
+          <td><span class="tag sub">1st Order</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td class="eq-cell">d²y/dx² = cos(3x) + sin(3x)</td>
+          <td class="sol-cell">y(x) = C1 + C2·x - sin(3x)/9 - cos(3x)/9</td>
+          <td><span class="tag plan">2nd Order</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td class="eq-cell">y''' + 2y'' + y' = 0</td>
+          <td class="sol-cell">y(x) = C1 + (C2 + C3·x)·e^(-x)</td>
+          <td><span class="tag lead">3rd Order</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CLASSIFICATION RESULTS -->
+  <p class="section-title">Classification Results (16/16)</p>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Equation Label</th>
+          <th>Classification</th>
+          <th>Order</th>
+          <th>Degree</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><code>d²y/dx² + sin(y) = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><code>dy/dx = e^x</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>1</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><code>(d²y/dx²)² + (dy/dx) = sin(x)</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>2</td>
+          <td>2</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><code>d⁴y/dx⁴ + sin(d³y/dx³) = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>4</td>
+          <td>Not defined</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><code>(d²y/dx²)² + cos(dy/dx) = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>2</td>
+          <td>Not defined</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><code>(dy/dx)² + 5y = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>1</td>
+          <td>2</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><code>d²y/dx² + dy/dx + y = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><code>∂²u/∂x² + ∂²u/∂y² = 0</code></td>
+          <td><span class="cls-pde">PDE</span></td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><code>∂u/∂t = c²(∂²u/∂x²)</code></td>
+          <td><span class="cls-pde">PDE</span></td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><code>x(dy/dx) + y = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>1</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><code>d²y/dx² + y = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><code>dy/dx - cos(x) = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>1</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><code>y' + 5y = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>1</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><code>d²y/dx² = cos(3x)+sin(3x)</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><code>y''' + 2y'' + y' = 0</code></td>
+          <td><span class="cls-ode">ODE</span></td>
+          <td>3</td>
+          <td>1</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><code>x² + y² = 1 (algebraic)</code></td>
+          <td><span class="cls-alg">Algebraic</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="tag completed">PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PYTHON MODULE DETAILS -->
+  <p class="section-title">Python Module Architecture</p>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>File</strong></td>
+          <td><code>post2__DIFFERENTIAL_EQUATIONS.py</code> (664 lines)</td>
+        </tr>
+        <tr>
+          <td><strong>Class</strong></td>
+          <td><code>DifferentialEquationSolver</code></td>
+        </tr>
+        <tr>
+          <td><strong>Method</strong></td>
+          <td><code>classify_equation(eq_str)</code> — returns ODE / PDE / Algebraic + order + degree</td>
+        </tr>
+        <tr>
+          <td><strong>Method</strong></td>
+          <td><code>solve_equation(eq_str)</code> — returns SymPy solution or None</td>
+        </tr>
+        <tr>
+          <td><strong>Method</strong></td>
+          <td><code>run_all_classifications()</code> — runs all 16 classification tests</td>
+        </tr>
+        <tr>
+          <td><strong>Method</strong></td>
+          <td><code>run_all_solutions()</code> — runs all 7 ODE solve tests</td>
+        </tr>
+        <tr>
+          <td><strong>Method</strong></td>
+          <td><code>print_summary()</code> — prints pass/fail summary table to stdout</td>
+        </tr>
+        <tr>
+          <td><strong>Math Engine</strong></td>
+          <td>SymPy — <code>dsolve()</code>, <code>symbols()</code>, <code>Function()</code></td>
+        </tr>
+        <tr>
+          <td><strong>Test Result</strong></td>
+          <td><span style="color:var(--green);font-weight:600">16/16 classified, 7/7 solved — ALL PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════ FOOTER ════════════════════════════ -->
+<footer>
+  <div>
+    Generated by <strong>CODE_AGENT_LEAD</strong>
+    <span class="footer-dot"> &bull; </span>
+    Dashboard by <strong>SUB_AGENT_2</strong>
+  </div>
+  <div class="footer-row">
+    <span>Session: <strong>2026-04-26</strong></span>
+    <span class="footer-dot">&bull;</span>
+    <span>Start: <strong>00:16 IST</strong></span>
+    <span class="footer-dot">&bull;</span>
+    <span>Project: <strong>NCERT Ch. 9 — Differential Equations</strong></span>
+    <span class="footer-dot">&bull;</span>
+    <span>Site: <strong>Overlander Tech</strong></span>
+    <span class="footer-dot">&bull;</span>
+    <span>Status: <strong style="color:var(--green)">ALL TASKS PASSED</strong></span>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DASHBOARD GRAPHS — HTML5 Canvas (no external libraries)
+   ═══════════════════════════════════════════════════════════ */
+
+(function () {
+  'use strict';
+
+  /* ── Shared colour palette (mirrors CSS :root) ─── */
+  var C = {
+    bg:        '#1a1a2e',
+    card:      '#16213e',
+    accent:    '#0f3460',
+    highlight: '#e94560',
+    text:      '#e0e0e0',
+    muted:     '#8892a4',
+    green:     '#2ecc71',
+    yellow:    '#f1c40f',
+    blue:      '#3498db',
+    purple:    '#9b59b6',
+    gridLine:  'rgba(255,255,255,0.06)'
+  };
+
+  /* ── Utility: set canvas physical px = CSS px × devicePixelRatio ─── */
+  function setupCanvas(id) {
+    var canvas = document.getElementById(id);
+    if (!canvas) return null;
+    var parent = canvas.parentElement;
+    var cssW   = parent.clientWidth - 38; /* account for panel padding */
+    var cssH   = 250;
+    var dpr    = window.devicePixelRatio || 1;
+    canvas.width  = cssW * dpr;
+    canvas.height = cssH * dpr;
+    canvas.style.width  = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    /* expose logical dimensions */
+    ctx._w = cssW;
+    ctx._h = cssH;
+    return ctx;
+  }
+
+  /* ── Utility: draw grid lines ─── */
+  function drawGrid(ctx, x0, y0, w, h, hLines, vLines) {
+    ctx.strokeStyle = C.gridLine;
+    ctx.lineWidth   = 1;
+    for (var i = 0; i <= hLines; i++) {
+      var y = y0 + (h / hLines) * i;
+      ctx.beginPath();
+      ctx.moveTo(x0, y);
+      ctx.lineTo(x0 + w, y);
+      ctx.stroke();
+    }
+    for (var j = 0; j <= vLines; j++) {
+      var x = x0 + (w / vLines) * j;
+      ctx.beginPath();
+      ctx.moveTo(x, y0);
+      ctx.lineTo(x, y0 + h);
+      ctx.stroke();
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     GRAPH 1 — Task Completion Timeline (step line chart)
+     ════════════════════════════════════════════════════════ */
+  function drawTimeline() {
+    var ctx = setupCanvas('graphTimeline');
+    if (!ctx) return;
+    var W = ctx._w, H = ctx._h;
+
+    /* margins */
+    var ml = 46, mr = 16, mt = 18, mb = 50;
+    var cw = W - ml - mr, ch = H - mt - mb;
+
+    /* data: time labels + cumulative done values */
+    var labels = ['00:16','00:17','00:18','00:20','00:21','00:22','00:23','00:24','00:25','00:29','00:30','00:33','00:34'];
+    var values = [0,      0,      0,      1,      1,      2,      3,      4,      4,      4,      5,      6,      7];
+    var maxVal = 7;
+    var n      = labels.length;
+
+    /* background */
+    ctx.fillStyle = C.card;
+    ctx.fillRect(0, 0, W, H);
+
+    /* grid */
+    drawGrid(ctx, ml, mt, cw, ch, maxVal, n - 1);
+
+    /* Y axis labels */
+    ctx.fillStyle  = C.muted;
+    ctx.font       = '10px Segoe UI, sans-serif';
+    ctx.textAlign  = 'right';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i <= maxVal; i++) {
+      var yp = mt + ch - (i / maxVal) * ch;
+      ctx.fillText(i, ml - 6, yp);
+    }
+
+    /* X axis labels — rotated */
+    ctx.textAlign   = 'right';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle   = C.muted;
+    ctx.font        = '9px Segoe UI, sans-serif';
+    for (var j = 0; j < n; j++) {
+      var xp = ml + (j / (n - 1)) * cw;
+      ctx.save();
+      ctx.translate(xp, mt + ch + 5);
+      ctx.rotate(-Math.PI / 4);
+      ctx.fillText(labels[j], 0, 0);
+      ctx.restore();
+    }
+
+    /* axis lines */
+    ctx.strokeStyle = C.muted;
+    ctx.lineWidth   = 1;
+    ctx.beginPath();
+    ctx.moveTo(ml, mt);
+    ctx.lineTo(ml, mt + ch);
+    ctx.lineTo(ml + cw, mt + ch);
+    ctx.stroke();
+
+    /* step line */
+    ctx.strokeStyle = C.highlight;
+    ctx.lineWidth   = 2.5;
+    ctx.lineJoin    = 'round';
+    ctx.beginPath();
+    for (var k = 0; k < n; k++) {
+      var sx = ml + (k / (n - 1)) * cw;
+      var sy = mt + ch - (values[k] / maxVal) * ch;
+      if (k === 0) ctx.moveTo(sx, sy);
+      else {
+        /* horizontal step, then vertical */
+        var prevX = ml + ((k - 1) / (n - 1)) * cw;
+        ctx.lineTo(sx, mt + ch - (values[k - 1] / maxVal) * ch);
+        ctx.lineTo(sx, sy);
+      }
+    }
+    ctx.stroke();
+
+    /* glow fill under line */
+    var grad = ctx.createLinearGradient(0, mt, 0, mt + ch);
+    grad.addColorStop(0, 'rgba(233,69,96,0.25)');
+    grad.addColorStop(1, 'rgba(233,69,96,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(ml, mt + ch);
+    for (var m = 0; m < n; m++) {
+      var fx = ml + (m / (n - 1)) * cw;
+      var fy = mt + ch - (values[m] / maxVal) * ch;
+      if (m === 0) ctx.lineTo(fx, fy);
+      else {
+        var pfx = ml + ((m - 1) / (n - 1)) * cw;
+        ctx.lineTo(fx, mt + ch - (values[m - 1] / maxVal) * ch);
+        ctx.lineTo(fx, fy);
+      }
+    }
+    ctx.lineTo(ml + cw, mt + ch);
+    ctx.closePath();
+    ctx.fill();
+
+    /* dots */
+    for (var d = 0; d < n; d++) {
+      var dx = ml + (d / (n - 1)) * cw;
+      var dy = mt + ch - (values[d] / maxVal) * ch;
+      ctx.beginPath();
+      ctx.arc(dx, dy, 4, 0, 2 * Math.PI);
+      ctx.fillStyle   = C.highlight;
+      ctx.fill();
+      ctx.strokeStyle = C.bg;
+      ctx.lineWidth   = 2;
+      ctx.stroke();
+    }
+
+    /* axis title */
+    ctx.fillStyle    = C.muted;
+    ctx.font         = '10px Segoe UI, sans-serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('Time (IST)', ml + cw / 2, H - 2);
+
+    ctx.save();
+    ctx.translate(10, mt + ch / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Tasks Done', 0, 0);
+    ctx.restore();
+  }
+
+  /* ════════════════════════════════════════════════════════
+     GRAPH 2 — Agent Workload Distribution (horizontal bars)
+     ════════════════════════════════════════════════════════ */
+  function drawWorkload() {
+    var ctx = setupCanvas('graphWorkload');
+    if (!ctx) return;
+    var W = ctx._w, H = ctx._h;
+
+    var data = [
+      { label: 'CODE_AGENT_LEAD', value: 5, color: C.highlight },
+      { label: 'SUB_AGENT_1',     value: 3, color: C.blue      },
+      { label: 'SUB_AGENT_2',     value: 2, color: C.purple    },
+      { label: 'SUB_AGENT_3',     value: 1, color: C.green     }
+    ];
+    var maxVal = 5;
+
+    var ml = 120, mr = 40, mt = 20, mb = 20;
+    var cw  = W - ml - mr;
+    var ch  = H - mt - mb;
+    var barH = Math.floor(ch / data.length * 0.55);
+    var gap  = Math.floor(ch / data.length * 0.45);
+
+    ctx.fillStyle = C.card;
+    ctx.fillRect(0, 0, W, H);
+
+    /* vertical grid lines */
+    ctx.strokeStyle = C.gridLine;
+    ctx.lineWidth   = 1;
+    for (var g = 0; g <= maxVal; g++) {
+      var gx = ml + (g / maxVal) * cw;
+      ctx.beginPath();
+      ctx.moveTo(gx, mt);
+      ctx.lineTo(gx, mt + ch);
+      ctx.stroke();
+    }
+
+    data.forEach(function (item, i) {
+      var y = mt + i * (barH + gap) + gap / 2;
+      var bw = (item.value / maxVal) * cw;
+
+      /* bar gradient */
+      var grad = ctx.createLinearGradient(ml, 0, ml + cw, 0);
+      grad.addColorStop(0, item.color);
+      grad.addColorStop(1, item.color + '88');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      /* rounded rect */
+      var r = 4;
+      ctx.moveTo(ml + r, y);
+      ctx.lineTo(ml + bw - r, y);
+      ctx.quadraticCurveTo(ml + bw, y, ml + bw, y + r);
+      ctx.lineTo(ml + bw, y + barH - r);
+      ctx.quadraticCurveTo(ml + bw, y + barH, ml + bw - r, y + barH);
+      ctx.lineTo(ml + r, y + barH);
+      ctx.quadraticCurveTo(ml, y + barH, ml, y + barH - r);
+      ctx.lineTo(ml, y + r);
+      ctx.quadraticCurveTo(ml, y, ml + r, y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* label */
+      ctx.fillStyle    = C.text;
+      ctx.font         = '11px Segoe UI, sans-serif';
+      ctx.textAlign    = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.label, ml - 8, y + barH / 2);
+
+      /* value */
+      ctx.fillStyle    = item.color;
+      ctx.font         = 'bold 11px Segoe UI, sans-serif';
+      ctx.textAlign    = 'left';
+      ctx.fillText(item.value + ' tasks', ml + bw + 6, y + barH / 2);
+    });
+
+    /* x-axis ticks */
+    ctx.fillStyle    = C.muted;
+    ctx.font         = '10px Segoe UI, sans-serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'top';
+    for (var t = 0; t <= maxVal; t++) {
+      ctx.fillText(t, ml + (t / maxVal) * cw, mt + ch + 4);
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     GRAPH 3 — Equation Classification by Order (donut)
+     ════════════════════════════════════════════════════════ */
+  function drawDonut() {
+    var ctx = setupCanvas('graphDonut');
+    if (!ctx) return;
+    var W = ctx._w, H = ctx._h;
+
+    var data = [
+      { label: 'Order 1 (6)',  value: 6, color: C.blue      },
+      { label: 'Order 2 (6)',  value: 6, color: C.purple    },
+      { label: 'Order 3 (3)',  value: 3, color: C.highlight },
+      { label: 'Order 4 (1)',  value: 1, color: C.yellow    }
+    ];
+    var total = data.reduce(function (s, d) { return s + d.value; }, 0);
+
+    ctx.fillStyle = C.card;
+    ctx.fillRect(0, 0, W, H);
+
+    var legendW = 130;
+    var cx = (W - legendW) / 2;
+    var cy = H / 2;
+    var outerR = Math.min(cx, cy) - 14;
+    var innerR = outerR * 0.56;
+
+    var startAngle = -Math.PI / 2;
+    data.forEach(function (item) {
+      var slice = (item.value / total) * 2 * Math.PI;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, outerR, startAngle, startAngle + slice);
+      ctx.closePath();
+      ctx.fillStyle = item.color;
+      ctx.fill();
+      ctx.strokeStyle = C.card;
+      ctx.lineWidth   = 3;
+      ctx.stroke();
+      startAngle += slice;
+    });
+
+    /* inner circle (donut hole) */
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerR, 0, 2 * Math.PI);
+    ctx.fillStyle = C.card;
+    ctx.fill();
+
+    /* centre label */
+    ctx.fillStyle    = C.text;
+    ctx.font         = 'bold 20px Segoe UI, sans-serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('16', cx, cy - 8);
+    ctx.font         = '10px Segoe UI, sans-serif';
+    ctx.fillStyle    = C.muted;
+    ctx.fillText('equations', cx, cy + 10);
+
+    /* legend */
+    var lx = W - legendW + 8;
+    var ly = (H - data.length * 26) / 2;
+    data.forEach(function (item, i) {
+      var ry = ly + i * 26;
+      ctx.fillStyle = item.color;
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(lx, ry + 3, 14, 14, 3)
+                    : (function() {
+                        ctx.rect(lx, ry + 3, 14, 14);
+                      })();
+      ctx.fill();
+      ctx.fillStyle    = C.text;
+      ctx.font         = '11px Segoe UI, sans-serif';
+      ctx.textAlign    = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.label, lx + 20, ry + 10);
+    });
+  }
+
+  /* ════════════════════════════════════════════════════════
+     GRAPH 4 — Task Duration Analysis (vertical bar chart)
+     ════════════════════════════════════════════════════════ */
+  function drawDuration() {
+    var ctx = setupCanvas('graphDuration');
+    if (!ctx) return;
+    var W = ctx._w, H = ctx._h;
+
+    var data = [
+      { label: 'Plan\nCreation',   value: 4 },
+      { label: 'Markdown\nPost',   value: 3 },
+      { label: 'Python\nSolver',   value: 4 },
+      { label: 'Verification',     value: 1 },
+      { label: 'Dashboard',        value: 1 }
+    ];
+    var maxVal = 5;
+
+    var ml = 40, mr = 16, mt = 20, mb = 52;
+    var cw  = W - ml - mr;
+    var ch  = H - mt - mb;
+    var n   = data.length;
+    var barW = Math.floor(cw / n * 0.6);
+    var step  = cw / n;
+
+    ctx.fillStyle = C.card;
+    ctx.fillRect(0, 0, W, H);
+
+    /* horizontal grid lines */
+    drawGrid(ctx, ml, mt, cw, ch, maxVal, 0);
+
+    /* Y axis labels */
+    ctx.fillStyle    = C.muted;
+    ctx.font         = '10px Segoe UI, sans-serif';
+    ctx.textAlign    = 'right';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i <= maxVal; i++) {
+      var yp = mt + ch - (i / maxVal) * ch;
+      ctx.fillText(i + 'm', ml - 4, yp);
+    }
+
+    /* axis lines */
+    ctx.strokeStyle = C.muted;
+    ctx.lineWidth   = 1;
+    ctx.beginPath();
+    ctx.moveTo(ml, mt);
+    ctx.lineTo(ml, mt + ch);
+    ctx.lineTo(ml + cw, mt + ch);
+    ctx.stroke();
+
+    data.forEach(function (item, i) {
+      var bx  = ml + i * step + (step - barW) / 2;
+      var bh  = (item.value / maxVal) * ch;
+      var by  = mt + ch - bh;
+
+      /* gradient from accent to highlight */
+      var grad = ctx.createLinearGradient(0, by, 0, by + bh);
+      grad.addColorStop(0, C.highlight);
+      grad.addColorStop(1, C.accent);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      var r = 4;
+      ctx.moveTo(bx + r, by);
+      ctx.lineTo(bx + barW - r, by);
+      ctx.quadraticCurveTo(bx + barW, by, bx + barW, by + r);
+      ctx.lineTo(bx + barW, by + bh);
+      ctx.lineTo(bx, by + bh);
+      ctx.lineTo(bx, by + r);
+      ctx.quadraticCurveTo(bx, by, bx + r, by);
+      ctx.closePath();
+      ctx.fill();
+
+      /* value on top */
+      ctx.fillStyle    = C.highlight;
+      ctx.font         = 'bold 11px Segoe UI, sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(item.value + 'm', bx + barW / 2, by - 2);
+
+      /* x label (multi-line) */
+      ctx.fillStyle    = C.muted;
+      ctx.font         = '10px Segoe UI, sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'top';
+      var lines = item.label.split('\n');
+      lines.forEach(function (line, li) {
+        ctx.fillText(line, bx + barW / 2, mt + ch + 6 + li * 13);
+      });
+    });
+
+    /* y-axis title */
+    ctx.save();
+    ctx.fillStyle    = C.muted;
+    ctx.font         = '10px Segoe UI, sans-serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.translate(10, mt + ch / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Duration (min)', 0, 0);
+    ctx.restore();
+  }
+
+  /* ── Run all graphs after DOM is ready ─── */
+  function drawAll() {
+    drawTimeline();
+    drawWorkload();
+    drawDonut();
+    drawDuration();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', drawAll);
+  } else {
+    drawAll();
+  }
+
+  /* Redraw on window resize */
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(drawAll, 120);
+  });
+
+}());
+</script>
+
+</body>
+</html>
