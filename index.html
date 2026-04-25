@@ -1,54 +1,435 @@
 ---
-layout: default
-title: Home
+layout: null
+title: "Overlander Tech"
+permalink: /index.html
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overlander Tech — AI-Powered Education &amp; Autonomous Evolution</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h2 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-  .post-list {
-    text-align: left;
-    list-style: none;
-    padding: 0;
-  }
-  .post-list li {
-    margin: 10px 0;
-  }
-  .post-list .post-date {
-    color: #999;
-    font-size: 0.9em;
-  }
-</style>
+    :root {
+      --bg:        #1a1a2e;
+      --card:      #16213e;
+      --accent:    #0f3460;
+      --highlight: #e94560;
+      --text:      #e0e0e0;
+      --muted:     #8892a4;
+      --green:     #2ecc71;
+      --yellow:    #f1c40f;
+      --blue:      #3498db;
+      --purple:    #9b59b6;
+      --border:    rgba(233, 69, 96, 0.25);
+    }
 
-<div class="container">
-  <h2>Overlander Tech.</h2>
+    html { scroll-behavior: smooth; }
 
-  <p><strong>Primary focus Education...</strong></p>
-  <p>autonomous evolution...</p>
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
 
-  <hr>
-  <h3>Posts</h3>
-  <ul class="post-list">
-    {% for post in site.posts %}
-    <li>
-      <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span> —
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
-    {% endfor %}
-  </ul>
+    /* ── HEADER ─────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--accent) 0%, #1a1a2e 60%);
+      border-bottom: 2px solid var(--highlight);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
 
-  <hr>
-  <h3>Pages</h3>
-  <ul class="post-list">
-    <li><a href="{{ 'agent-tasks-dashboard.html' | relative_url }}">Agent Tasks Dashboard</a></li>
-  </ul>
-</div>
+    header .badge {
+      display: inline-block;
+      background: var(--highlight);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    header h1 span {
+      color: var(--highlight);
+    }
+
+    header p.subtitle {
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    header .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    header .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    header .meta-item strong { color: var(--text); }
+
+    header .meta-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.4; }
+    }
+
+    /* ── MAIN CONTAINER ──────────────────────────────────── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── SECTION TITLE ───────────────────────────────────── */
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--highlight);
+      margin-bottom: 1.2rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid var(--highlight);
+    }
+
+    /* ── HERO CARDS ──────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--highlight);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+    }
+
+    .card.red::before    { background: var(--highlight); }
+    .card.green::before  { background: var(--green); }
+    .card.blue::before   { background: var(--blue); }
+    .card.purple::before { background: var(--purple); }
+    .card.yellow::before { background: var(--yellow); }
+
+    .card .icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .card .card-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--highlight);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .card .card-link:hover {
+      color: #fff;
+    }
+
+    .card .card-link::after {
+      content: ' →';
+    }
+
+    /* ── POSTS LIST ──────────────────────────────────────── */
+    .posts-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .post-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .post-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .post-item:hover {
+      transform: translateX(4px);
+      border-color: var(--highlight);
+    }
+
+    .post-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      min-width: 90px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .post-title {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .post-title:hover {
+      color: var(--highlight);
+    }
+
+    .empty-state {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── PAGES / DASHBOARDS ──────────────────────────────── */
+    .pages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .page-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .page-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--highlight);
+    }
+
+    .page-icon {
+      font-size: 2rem;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .page-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .page-info p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--highlight);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header { padding: 2rem 1rem 1.5rem; }
+      header h1 { font-size: 1.6rem; }
+      .container { padding: 1.5rem 1rem 3rem; }
+      .post-item { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ──────────────────────────────────────────── -->
+  <header>
+    <div class="badge">Open Source</div>
+    <h1>Overlander <span>Tech.</span></h1>
+    <p class="subtitle">Primary focus Education — AI agents, autonomous evolution, and intelligent systems</p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="meta-dot"></div>
+        <strong>Active</strong>
+      </div>
+      <div class="meta-item">
+        📅 <strong>{{ site.time | date: "%B %d, %Y" }}</strong>
+      </div>
+      <div class="meta-item">
+        🔗 <strong><a href="https://github.com/overlander-tech" style="color:var(--highlight);text-decoration:none;">GitHub</a></strong>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ── FOCUS AREAS ─────────────────────────────────────── -->
+    <div class="section-title">Focus Areas</div>
+    <div class="cards-grid">
+
+      <div class="card red">
+        <div class="icon">🤖</div>
+        <h3>AI Agents</h3>
+        <p>Autonomous agents that plan, execute, and learn from multi-step workflows</p>
+      </div>
+
+      <div class="card green">
+        <div class="icon">🧬</div>
+        <h3>Autonomous Evolution</h3>
+        <p>Self-improving systems that adapt and optimize over time</p>
+      </div>
+
+      <div class="card blue">
+        <div class="icon">📚</div>
+        <h3>Education</h3>
+        <p>Making AI accessible through practical guides, dashboards, and open-source tools</p>
+      </div>
+
+      <div class="card purple">
+        <div class="icon">⚡</div>
+        <h3>Intelligent Systems</h3>
+        <p>Building robust pipelines and infrastructure for agent-driven development</p>
+      </div>
+
+    </div>
+
+    <!-- ── DASHBOARDS & PAGES ──────────────────────────────── -->
+    <div class="section-title">Dashboards &amp; Pages</div>
+    <div class="pages-grid">
+
+      <a class="page-card" href="{{ 'agent-tasks-dashboard.html' | relative_url }}">
+        <div class="page-icon">📊</div>
+        <div class="page-info">
+          <h3>Agent Tasks Dashboard</h3>
+          <p>Live view of agent task execution, status tracking, and workflow progress</p>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── POSTS ───────────────────────────────────────────── -->
+    <div class="section-title">Posts</div>
+    <div class="posts-section">
+      {% if site.posts.size > 0 %}
+      <ul class="post-list">
+        {% for post in site.posts %}
+        <li class="post-item">
+          <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+          <a class="post-title" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="empty-state">
+        No posts yet — check back soon.
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ──────────────────────────────────────────── -->
+  <footer>
+    <p>Overlander Tech &copy; {{ site.time | date: "%Y" }} · Built with <a href="https://jekyllrb.com">Jekyll</a> · Hosted on <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+
+</body>
+</html>
