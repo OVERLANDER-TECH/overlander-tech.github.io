@@ -1,7 +1,7 @@
 ---
-layout: post
 title: "Chapter 9 — Differential Equations"
-date: 2026-04-26 00:30:00 +0530
+date: 2026-04-26
+layout: post
 categories: mathematics differential-equations
 ---
 

@@ -1,0 +1,11 @@
+title: Overlander Tech
+description: "Primary focus Education — autonomous evolution"
+url: "https://overlander-tech.github.io"
+baseurl: ""
+
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+
+plugins:
+  - jekyll-feed

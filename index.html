@@ -1,23 +1,54 @@
-<style type="text/css" media="screen">
-    .container {
-      margin: 10px auto;
-      max-width: 600px;
-      text-align: center;
-    }
-    h2 {
-      margin: 30px 0;
-      font-size: 4em;
-      line-height: 1;
-      letter-spacing: -1px;
-    }
-  </style>
-  
-  <div class="container">
-    <h2>Overlander Tech.</h2>
-  
-    <p><strong> primary focus Education...</strong></p>
-    <p> autonomous evolution...</p>
-    
+---
+layout: default
+title: Home
+---
 
-  </div>
-  
+<style type="text/css" media="screen">
+  .container {
+    margin: 10px auto;
+    max-width: 600px;
+    text-align: center;
+  }
+  h2 {
+    margin: 30px 0;
+    font-size: 4em;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .post-list {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+  }
+  .post-list li {
+    margin: 10px 0;
+  }
+  .post-list .post-date {
+    color: #999;
+    font-size: 0.9em;
+  }
+</style>
+
+<div class="container">
+  <h2>Overlander Tech.</h2>
+
+  <p><strong>Primary focus Education...</strong></p>
+  <p>autonomous evolution...</p>
+
+  <hr>
+  <h3>Posts</h3>
+  <ul class="post-list">
+    {% for post in site.posts %}
+    <li>
+      <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span> —
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <hr>
+  <h3>Pages</h3>
+  <ul class="post-list">
+    <li><a href="{{ 'agent-tasks-dashboard.html' | relative_url }}">Agent Tasks Dashboard</a></li>
+  </ul>
+</div>
