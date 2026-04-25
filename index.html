@@ -329,6 +329,65 @@ permalink: /index.html
       text-decoration: underline;
     }
 
+    /* ── CODE TABLE ──────────────────────────────────────── */
+    .code-table-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .code-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 0.88rem;
+    }
+
+    .code-table thead {
+      background: var(--accent);
+    }
+
+    .code-table th {
+      text-align: left;
+      padding: 0.9rem 1.2rem;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--highlight);
+    }
+
+    .code-table td {
+      padding: 0.85rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .code-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .code-table tbody tr {
+      transition: background 0.15s;
+    }
+
+    .code-table tbody tr:hover {
+      background: rgba(233, 69, 96, 0.06);
+    }
+
+    .code-table a {
+      color: var(--highlight);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .code-table a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
     /* ── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 600px) {
       header { padding: 2rem 1rem 1.5rem; }
@@ -414,6 +473,30 @@ permalink: /index.html
           <a class="post-title" href="{{ '/mathematics/2026/04/26/differential-equations.html' | relative_url }}">Chapter 9 — Differential Equations</a>
         </li>
       </ul>
+    </div>
+
+    <!-- ── PYTHON CODE ────────────────────────────────────── -->
+    <div class="section-title">Python Code</div>
+    <div class="code-table-section">
+      <table class="code-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>File Name</th>
+            <th>Description</th>
+            <th>Related Post</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><a href="https://github.com/overlander-tech/overlander-tech.github.io/blob/main/_posts/DIFFERENTIAL_EQUATIONS.py" target="_blank">DIFFERENTIAL_EQUATIONS.py</a></td>
+            <td>SymPy solver — classifies &amp; solves ODEs from NCERT Ch. 9</td>
+            <td><a href="{{ '/mathematics/2026/04/26/differential-equations.html' | relative_url }}">Differential Equations</a></td>
+          </tr>
+          <!-- Add more rows here as new Python files are created -->
+        </tbody>
+      </table>
     </div>
 
   </div>
