@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat — Overlander Tech</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #1a1a2e;
+      --card:      #16213e;
+      --accent:    #0f3460;
+      --highlight: #e94560;
+      --text:      #e0e0e0;
+      --muted:     #8892a4;
+      --green:     #2ecc71;
+      --border:    rgba(233, 69, 96, 0.25);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      color: var(--highlight);
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+      letter-spacing: 1px;
+    }
+
+    .ngrok-bar {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .ngrok-bar label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .ngrok-bar input {
+      flex: 1;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-family: monospace;
+    }
+
+    .chat-window {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 300px;
+      max-height: 60vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .msg {
+      padding: 0.55rem 0.9rem;
+      border-radius: 8px;
+      max-width: 80%;
+      line-height: 1.4;
+      font-size: 0.92rem;
+    }
+
+    .msg.user {
+      background: var(--accent);
+      align-self: flex-end;
+      color: var(--text);
+    }
+
+    .msg.bot {
+      background: #1e3a5f;
+      border-left: 3px solid var(--highlight);
+      align-self: flex-start;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .msg.error {
+      background: #3d1a1a;
+      border-left: 3px solid var(--highlight);
+      align-self: flex-start;
+      color: #ff6b6b;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .input-row input {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .input-row input:focus { outline: 2px solid var(--highlight); }
+
+    .input-row button {
+      background: var(--highlight);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .input-row button:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+  <h1>OVERLANDER TECH — CHAT</h1>
+
+  <div class="ngrok-bar">
+    <label>NGROK URL:</label>
+    <input id="ngrokUrl" type="text" value="https://53aa-2401-4900-1f30-4ae5-61e9-ef76-e149-2d3f.ngrok-free.app" />
+  </div>
+
+  <div class="chat-window" id="chatWindow"></div>
+
+  <div class="input-row">
+    <input id="msgInput" type="text" value="HELLO BOT" placeholder="HELLO BOT" />
+    <button onclick="sendMessage()">SEND</button>
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById("chatWindow");
+    const msgInput   = document.getElementById("msgInput");
+    const ngrokInput = document.getElementById("ngrokUrl");
+
+    function addMsg(text, cls) {
+      const div = document.createElement("div");
+      div.className = "msg " + cls;
+      div.textContent = text;
+      chatWindow.appendChild(div);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text    = msgInput.value.trim();
+      const baseUrl = ngrokInput.value.trim().replace(/\/$/, "");
+      if (!text) return;
+
+      addMsg(text, "user");
+      msgInput.value = "";
+
+      try {
+        const res = await fetch(baseUrl + "/chat", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ message: text }),
+        });
+        const data = await res.json();
+        addMsg(data.reply, "bot");
+      } catch (err) {
+        addMsg("Error: could not reach bot. Check the NGROK URL.", "error");
+      }
+    }
+
+    msgInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+
+</body>
+</html>
