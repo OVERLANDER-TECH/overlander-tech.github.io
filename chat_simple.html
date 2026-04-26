@@ -133,10 +133,16 @@
 
     let NGROK_URL = "";
 
-    function addMsg(text, cls) {
+    // isHtml = true  → render server-controlled HTML (game link button)
+    // isHtml = false → render as plain text (user input always uses this path)
+    function addMsg(text, cls, isHtml = false) {
       const div = document.createElement("div");
       div.className = "msg " + cls;
-      div.textContent = text;
+      if (isHtml) {
+        div.innerHTML = text;          // safe: only server-generated HTML reaches here
+      } else {
+        div.textContent = text;        // safe: user input never treated as HTML
+      }
       chatWindow.appendChild(div);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     }
@@ -146,7 +152,7 @@
       if (!text) return;
       if (!NGROK_URL) { addMsg("Bot not ready yet. Try again in a moment.", "error"); return; }
 
-      addMsg(text, "user");
+      addMsg(text, "user", false);     // user messages — always plain text
       msgInput.value = "";
 
       try {
@@ -156,9 +162,9 @@
           body:    JSON.stringify({ message: text }),
         });
         const data = await res.json();
-        addMsg(data.reply, "bot");
+        addMsg(data.reply, "bot", data.html || false);
       } catch (err) {
-        addMsg("Error: could not reach bot.", "error");
+        addMsg("Error: could not reach bot.", "error", false);
       }
     }
 
